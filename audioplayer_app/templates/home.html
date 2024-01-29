@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        .ocults {
+            display: none;
+        }
+	textarea {
+	    resize: none;
+	}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card mt-5 col-sm-6 mx-auto">
+            <div class="card-header">
+                <h1>Audio Player</h1>
+            </div>
+            <div class="card-body">
+                <form id="audioForm">
+                    <div class="form-group">
+                        <label for="texto">Texto:</label>
+                        <textarea type="text" rows="8" class="form-control" id="texto" name="texto" required></textarea>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="numeroVezes">Número de Vezes:</label>
+                        <input class="form-control" type="number" id="numeroVezes" name="numeroVezes" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <button class="btn btn-primary" type="button" onclick="iniciarAudio()">Iniciar Áudio</button>
+                        <button class="btn btn-secondary" type="button" onclick="pararAudio()">Parar Áudio</button>
+                    </div>
+                </form>
+                <div id="message" class="alert alert-success mt-3 ocults">
+                    <p></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function iniciarAudio() {
+            var texto = document.getElementById('texto').value;
+            var numeroVezes = document.getElementById('numeroVezes').value;
+            let message = document.getElementById("message");
+
+            message.style.display = "block"
+
+            // Lógica para chamar a API para iniciar áudio
+            fetch(`/iniciar_audio/${texto}/${numeroVezes}/`)
+                .then(response => response.json())
+                .then(data => {
+                    message.innerHTML = data.message
+                });
+        }
+
+        function pararAudio() {
+            message.style.display = "block"
+            // Lógica para chamar a API para parar a geração de áudio
+            fetch('/parar_audio/')
+                .then(response => response.json())
+                .then(data => {
+                    message.innerHTML = data.message
+                });
+        }
+    </script>
+</body>
+
+</html>
